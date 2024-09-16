@@ -17,7 +17,7 @@ const addCard = ()=>{
   <div class="grid grid-cols-4 gap-5 p-5">
     <Card
       v-for="(item, index) in 6"
-      img="/sneakers/sneakers-1.jpg"
+      :img="`/sneakers/sneakers-${index+1}.jpg`"
       :price="1000"
       title="Nike"
       :is-added="false"
