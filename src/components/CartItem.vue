@@ -16,7 +16,7 @@ defineProps({
         <span class="font-bold">{{ price }} uan.</span>
         <img
           class="cursor-pointer opacity-80 hover:opacity-100 transition"
-          src="/close.svg"
+          src="/img/close.svg"
           alt="Close"
         />
       </div>

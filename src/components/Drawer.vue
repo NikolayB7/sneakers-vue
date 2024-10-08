@@ -62,7 +62,7 @@ import CartItem from '@/components/CartItem.vue'
           class="flex justify-center items-center gap-3 w-full py-3 mt-10 bg-lime-500 text-white rounded-xl transition active:bg-lime-700 hover:bg-lime-600"
         >
           Оформить заказ
-          <img src="/arrow-next.svg" alt="Arrow" />
+          <img src="/img/arrow-next.svg" alt="Arrow" />
         </button>
       </div>
     </div>

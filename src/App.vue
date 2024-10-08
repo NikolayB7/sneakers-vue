@@ -2,6 +2,9 @@
 import Header from '@/components/Header.vue'
 import CardList from '@/components/CardList.vue'
 import Drawer from '@/components/Drawer.vue'
+
+import skeakersList from "../public/data/sneakers.json"
+
 </script>
 
 <template>
@@ -26,14 +29,14 @@ import Drawer from '@/components/Drawer.vue'
               placeholder="Поиск..."
             />
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <img src="/search.svg" />
+              <img src="/img/search.svg" />
             </div>
           </div>
         </div>
       </div>
       </div>
 
-    <CardList/>
+    <CardList :items="skeakersList"/>
 
 <!--    <Drawer/>-->
 
