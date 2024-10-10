@@ -1,9 +1,38 @@
 <script setup>
+import { onMounted, ref } from 'vue'
+import axios from 'axios'
+
 import Header from '@/components/Header.vue'
 import CardList from '@/components/CardList.vue'
-import Drawer from '@/components/Drawer.vue'
 
-import skeakersList from "../public/data/sneakers.json"
+import Drawer from '@/components/Drawer.vue'
+// import skeakersList from "../public/data/sneakers.json"
+
+// onMounted(async ()=>{
+//   try {
+//     const {data} = await axios.get('https://4023d8e1c4c444d2.mokky.dev/items')
+//     console.log(data)
+//   }catch (err){
+//     console.log(err)
+//   }
+// })
+
+
+const skeakersList = ref([])
+
+onMounted(()=>{
+  // fetch('https://4023d8e1c4c444d2.mokky.dev/items')
+  //   .then((res)=>res.json())
+  //   .then((data)=>{
+  //     console.log(data)
+  //   })
+  axios.get('https://4023d8e1c4c444d2.mokky.dev/items')
+    .then((result)=>{
+      console.log(result.data)
+      skeakersList.value = result.data
+    })
+})
+
 
 </script>
 

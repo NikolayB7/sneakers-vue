@@ -21,7 +21,7 @@ defineProps({
     <div @click="addFavorite" class="absolute top-8 left-8">
       <img :src="!isLiked ? '/img/like-1.svg' : '/img/like-2.svg'" alt="Favorite" />
     </div>
-    <img :src="img" class="w-full" alt="Sneaker" />
+    <img :src="`/img/${img}`" class="w-full" alt="Sneaker" />
     <p>{{ title }}</p>
     <div class="flex justify-between mt-5">
       <div class="flex flex-col gap-2">
