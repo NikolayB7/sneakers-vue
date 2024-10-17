@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import axios from 'axios'
 
 import Header from '@/components/Header.vue'
@@ -12,27 +12,58 @@ import Drawer from '@/components/Drawer.vue'
 //   try {
 //     const {data} = await axios.get('https://4023d8e1c4c444d2.mokky.dev/items')
 //     console.log(data)
+//     skeakersList.value = data
 //   }catch (err){
 //     console.log(err)
 //   }
 // })
 
 
-const skeakersList = ref([])
+const skeakersList = ref([]); //{value: []}
 
-onMounted(()=>{
-  // fetch('https://4023d8e1c4c444d2.mokky.dev/items')
-  //   .then((res)=>res.json())
-  //   .then((data)=>{
-  //     console.log(data)
-  //   })
-  axios.get('https://4023d8e1c4c444d2.mokky.dev/items')
-    .then((result)=>{
-      console.log(result.data)
-      skeakersList.value = result.data
-    })
+const filters = reactive({
+  sortBy: '',
+  searchQuery: ''
 })
 
+const sortBy = ref('');
+const searchQuery = ref('');
+
+const onChangeSelect = ()=>{
+  filters.sortBy = event.target.value
+}
+
+const fetchItems = async ()=>{
+  try {
+    const {data} = await axios.get(`https://4023d8e1c4c444d2.mokky.dev/items?sortBy=${filters.sortBy}`)
+    skeakersList.value = data
+  }catch (err){
+    console.log(err)
+  }
+}
+onMounted(fetchItems);
+watch(fetchItems)
+// onMounted(()=>{
+//   // fetch('https://4023d8e1c4c444d2.mokky.dev/items')
+//   //   .then((res)=>res.json())
+//   //   .then((data)=>{
+//   //     console.log(data)
+//   //   })
+//   //
+//   // axios.get('https://4023d8e1c4c444d2.mokky.dev/items')
+//   //   .then((result)=>{
+//   //     skeakersList.value = result.data
+//   //   })
+// })
+
+
+// watch(filters,async ()=>{
+//   axios.get(`https://4023d8e1c4c444d2.mokky.dev/items?sortBy=${filters.sortBy}`)
+//     .then((result)=>{
+//       console.log(result.data)
+//       skeakersList.value = result.data
+//     })
+// })
 
 </script>
 
@@ -45,11 +76,12 @@ onMounted(()=>{
         <h1 class="text-3xl font-bold">Все кроссовки</h1>
         <div class="flex items-center gap-4">
           <select
+            @change="onChangeSelect"
             class="py-2 px-3 border border-gray-200 focus:border-gray-400 rounded-md focus:outline-none"
           >
             <option value="name">По названию</option>
             <option value="price">По цене (дешевые)</option>
-            <option value="price">По цене (дорогие)</option>
+            <option value="-price">По цене (дорогие)</option>
           </select>
           <div class="relative">
             <input
@@ -63,11 +95,11 @@ onMounted(()=>{
           </div>
         </div>
       </div>
-      </div>
+    </div>
 
     <CardList :items="skeakersList"/>
 
-<!--    <Drawer/>-->
+    <!--    <Drawer/>-->
 
   </div>
 
