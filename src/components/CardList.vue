@@ -1,7 +1,7 @@
 <script setup>
 
 import Card from '@/components/Card.vue'
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
 
 defineProps({
   items:Array
@@ -14,6 +14,9 @@ const addFavorite = ()=>{
 const addCard = ()=>{
   // isLiked.value = !isLiked.value
 }
+
+const addToFavorite = inject('addToFavorite')
+
 </script>
 
 <template>
@@ -21,13 +24,14 @@ const addCard = ()=>{
     <Card
       v-for="(item, index) in items"
       :key="item.id"
+      :id="item.id"
       :img="item.imageUrl"
       :price="item.price"
       :title="item.title"
       :is-added="false"
       :is-favorite="item.isFavorite"
       :addCard="addCard"
-      :addFavorite="addFavorite"
+      :clickToFavorite="()=>addToFavorite(item)"
     />
   </div>
 </template>
