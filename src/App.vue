@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref, watch,provide } from 'vue'
 import axios from 'axios'
 
 import Header from '@/components/Header.vue'
@@ -21,8 +21,11 @@ import Drawer from '@/components/Drawer.vue'
 
 const skeakersList = ref([]); //{value: []}
 
+// reactive - для хранения обьектов
+// ref - для хранения массивов
+
 const filters = reactive({
-  sortBy: '',
+  sortBy: 'title',
   searchQuery: ''
 })
 
@@ -32,16 +35,62 @@ const searchQuery = ref('');
 const onChangeSelect = ()=>{
   filters.sortBy = event.target.value
 }
+const onChangeSearchInput =()=>{
+  filters.searchQuery = event.target.value
+}
 
-const fetchItems = async ()=>{
+const fetchFavorites = async ()=>{
   try {
-    const {data} = await axios.get(`https://4023d8e1c4c444d2.mokky.dev/items?sortBy=${filters.sortBy}`)
-    skeakersList.value = data
+    const {data:favorites} = await axios.get(`https://4023d8e1c4c444d2.mokky.dev/favorites`)
+    skeakersList.value = skeakersList.value.map(item=>{
+      const favorite = favorites.find(favorite=>favorite.productId === item.id);
+
+      if(!favorite){
+        return item;
+      }
+
+      return {
+        ...item,
+        isFavorite:true,
+        favoriteId:favorite.id
+      }
+
+    })
+    // console.log(skeakersList.value)
   }catch (err){
     console.log(err)
   }
 }
-onMounted(fetchItems);
+
+const addToFavorite = async (item)=>{
+  console.log('addToFavorite')
+  item.isFavorite = true
+}
+
+const fetchItems = async ()=>{
+  try {
+    const params = {
+      sortBy: filters.sortBy
+    }
+
+    if(filters.searchQuery){
+      params.title = `*${filters.searchQuery}*`
+    }
+
+    const {data} = await axios.get(`https://4023d8e1c4c444d2.mokky.dev/items` ,{params})
+    skeakersList.value = data.map((obj)=>({
+      ...obj,
+      isFavorite:false,
+      isAdded:false
+    }))
+  }catch (err){
+    console.log(err)
+  }
+}
+onMounted(async ()=>{
+  await fetchItems()
+  await fetchFavorites()
+});
 watch(fetchItems)
 // onMounted(()=>{
 //   // fetch('https://4023d8e1c4c444d2.mokky.dev/items')
@@ -65,6 +114,8 @@ watch(fetchItems)
 //     })
 // })
 
+provide("addToFavorite",addToFavorite)
+
 </script>
 
 <template>
@@ -85,6 +136,7 @@ watch(fetchItems)
           </select>
           <div class="relative">
             <input
+              @change="onChangeSearchInput"
               type="text"
               class="border border-gray-200 rounded-md py-2 pl-10 pr-4 focus:outline-none focus:border-gray-400"
               placeholder="Поиск..."
@@ -97,7 +149,7 @@ watch(fetchItems)
       </div>
     </div>
 
-    <CardList :items="skeakersList"/>
+    <CardList :items="skeakersList"  />
 
     <!--    <Drawer/>-->
 

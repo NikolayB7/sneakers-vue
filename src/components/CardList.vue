@@ -25,7 +25,7 @@ const addCard = ()=>{
       :price="item.price"
       :title="item.title"
       :is-added="false"
-      :is-liked="false"
+      :is-favorite="item.isFavorite"
       :addCard="addCard"
       :addFavorite="addFavorite"
     />

@@ -1,15 +1,18 @@
 <script setup>
-
+import {inject} from 'vue'
 
 defineProps({
   title: String,
   img: String,
   price: Number,
-  isLiked:Boolean,
+  isFavorite:Boolean,
   isAdded:Boolean,
   addFavorite:Function,
   addCard:Function,
 });
+
+const addToFavorite = inject('addToFavorite')
+
 
 
 </script>
@@ -18,8 +21,8 @@ defineProps({
   <div
     class="flex-grow-0 flex-shrink-0 basis-1/4 relative flex flex-col w-full border border-slate-100 rounded-xl p-5 cursor-pointer transition hover:shadow-xl hover:transform hover:-translate-y-2"
   >
-    <div @click="addFavorite" class="absolute top-8 left-8">
-      <img :src="!isLiked ? '/img/like-1.svg' : '/img/like-2.svg'" alt="Favorite" />
+    <div @click="addToFavorite" class="absolute top-8 left-8">
+      <img :src="!isFavorite ? '/img/like-1.svg' : '/img/like-2.svg'" alt="Favorite" />
     </div>
     <img :src="`/img/${img}`" class="w-full" alt="Sneaker" />
     <p>{{ title }}</p>
