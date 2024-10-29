@@ -29,8 +29,8 @@ const filters = reactive({
   searchQuery: ''
 })
 
-const sortBy = ref('');
-const searchQuery = ref('');
+// const sortBy = ref('');
+// const searchQuery = ref('');
 
 const onChangeSelect = ()=>{
   filters.sortBy = event.target.value
@@ -63,8 +63,7 @@ const fetchFavorites = async ()=>{
 }
 
 const addToFavorite = async (item)=>{
-  console.log('addToFavorite')
-  item.isFavorite = true
+  item.isFavorite = !item.isFavorite
 }
 
 const fetchItems = async ()=>{
@@ -114,7 +113,7 @@ watch(fetchItems)
 //     })
 // })
 
-provide("addToFavorite",addToFavorite)
+// provide("addToFavorite",addToFavorite)
 
 </script>
 
@@ -149,7 +148,7 @@ provide("addToFavorite",addToFavorite)
       </div>
     </div>
 
-    <CardList :items="skeakersList"  />
+    <CardList :items="skeakersList" @addToFavorite="addToFavorite" />
 
     <!--    <Drawer/>-->
 
