@@ -4,6 +4,11 @@ import { inject } from 'vue'
 
 const {closeDrawer,cart,removeFromCart} = inject('cardActions')
 
+defineProps({
+  totalPrice:Number,
+  vatPrice:Number
+})
+
 </script>
 
 
@@ -45,7 +50,7 @@ const {closeDrawer,cart,removeFromCart} = inject('cardActions')
           :title="item.title"
           :price="item.price"
           :img="`img/${item.imageUrl}`"
-          @onClickRemove="()=>removeFromCart(item)"
+          @on-click-remove="()=>removeFromCart(item)"
         />
 
       </div>
@@ -55,13 +60,13 @@ const {closeDrawer,cart,removeFromCart} = inject('cardActions')
           <div class="flex items-end gap-2">
             <span>Итого:</span>
             <div class="flex-1 border-b border-dashed" />
-            <span class="font-bold">1000 uan.</span>
+            <span class="font-bold">{{ totalPrice }} uan.</span>
           </div>
 
           <div class="flex items-end gap-2">
             <span>Налог 5%:</span>
             <div class="flex-1 border-b border-dashed" />
-            <span class="font-bold">50 uan.</span>
+            <span class="font-bold">{{ vatPrice }} uan.</span>
           </div>
         </div>
 

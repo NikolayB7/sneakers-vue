@@ -1,5 +1,8 @@
 <script setup>
 const emit = defineEmits(['openDrawer']);
+defineProps({
+  total:Number
+})
 </script>
 
 <template>
@@ -21,7 +24,7 @@ const emit = defineEmits(['openDrawer']);
         class="flex items-center gap-3 cursor-pointer"
       >
         <img src="/img/cart.svg" alt="Cart" />
-        <b>1205 uan.</b>
+        <b>{{ total }} uan.</b>
       </li>
       <!-- Закладки -->
       <li class="flex items-center gap-3 cursor-pointer">

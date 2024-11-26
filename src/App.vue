@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref, watch,provide } from 'vue'
+import { onMounted, reactive, ref, watch, provide, computed } from 'vue'
 import axios from 'axios'
 
 import Header from '@/components/Header.vue'
@@ -24,6 +24,9 @@ const skeakersList = ref([]); //{value: []}
 const cart = ref([])
 // reactive - для хранения обьектов
 // ref - для хранения массивов
+
+const totalPrice = computed(()=> cart.value.reduce((count,item)=>count + item.price,0));
+const vatPrice = computed(()=>Math.round((totalPrice.value * 5) / 100));
 
 const filters = reactive({
   sortBy: 'title',
@@ -176,7 +179,10 @@ provide("cardActions",
 
 <template>
   <div class="bg-white w-4/5 m-auto rounded-xl shadow-xl shadow-grey-200 mt-20">
-    <Header @open-drawer="openDrawer"/>
+    <Header
+      :total="totalPrice"
+      @open-drawer="openDrawer"
+    />
 
     <div class="p-10">
       <div class="flex justify-between items-center mb-10">
@@ -211,7 +217,11 @@ provide("cardActions",
       @add-to-cart="clickToCart"
     />
 
-    <Drawer v-if="drawerOpen"/>
+    <Drawer
+      v-if="drawerOpen"
+      :vat-price="vatPrice"
+      :total-price="totalPrice"
+    />
 
   </div>
 
