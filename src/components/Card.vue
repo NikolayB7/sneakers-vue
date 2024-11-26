@@ -8,7 +8,7 @@ defineProps({
   isFavorite:Boolean,
   isAdded:Boolean,
   clickToFavorite:Function,
-  addCard:Function,
+  addCart:Function,
 });
 
 </script>
@@ -27,7 +27,7 @@ defineProps({
         <span class="text-slate-200">Цена:</span>
         <span class="font-bold">{{ price }} uan.</span>
       </div>
-      <img @click="addCard" :src="!isAdded ? '/img/plus.svg' : '/img/checked.svg'" alt="Plus" />
+      <img @click="addCart" :src="!isAdded ? '/img/plus.svg' : '/img/checked.svg'" alt="Plus" />
     </div>
   </div>
 </template>

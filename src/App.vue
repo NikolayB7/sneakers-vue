@@ -21,6 +21,7 @@ import Drawer from '@/components/Drawer.vue'
 
 const skeakersList = ref([]); //{value: []}
 
+const cart = ref([])
 // reactive - для хранения обьектов
 // ref - для хранения массивов
 
@@ -103,11 +104,50 @@ const fetchItems = async ()=>{
     console.log(err)
   }
 }
+
+const addToCart = (item)=>{
+  cart.value.push(item)
+  item.isAdded = true
+}
+const removeFromCart = (item)=>{
+  const index = cart.value.indexOf(item);
+  if (index > -1) {
+    cart.value.splice(index, 1);
+  }
+  item.isAdded = false
+}
+
+const clickToCart = (item)=>{
+  if(!item.isAdded){
+    addToCart(item)
+  }else{
+    removeFromCart(item)
+  }
+}
+
+const drawerOpen = ref(false)
+
+const openDrawer = ()=>{
+  drawerOpen.value = true
+}
+const closeDrawer = ()=>{
+  drawerOpen.value = false
+}
+
 onMounted(async ()=>{
   await fetchItems()
   await fetchFavorites()
 });
 watch(fetchItems)
+
+provide("cardActions",
+  {
+    cart,
+    openDrawer,
+    closeDrawer,
+    addToCart,
+    removeFromCart
+  })
 // onMounted(()=>{
 //   // fetch('https://4023d8e1c4c444d2.mokky.dev/items')
 //   //   .then((res)=>res.json())
@@ -136,7 +176,7 @@ watch(fetchItems)
 
 <template>
   <div class="bg-white w-4/5 m-auto rounded-xl shadow-xl shadow-grey-200 mt-20">
-    <Header/>
+    <Header @open-drawer="openDrawer"/>
 
     <div class="p-10">
       <div class="flex justify-between items-center mb-10">
@@ -165,9 +205,13 @@ watch(fetchItems)
       </div>
     </div>
 
-    <CardList :items="skeakersList" @addToFavorite="addToFavorite" />
+    <CardList
+      :items="skeakersList"
+      @addToFavorite="addToFavorite"
+      @add-to-cart="clickToCart"
+    />
 
-    <!--    <Drawer/>-->
+    <Drawer v-if="drawerOpen"/>
 
   </div>
 

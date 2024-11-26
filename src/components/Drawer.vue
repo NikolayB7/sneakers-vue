@@ -1,5 +1,9 @@
 <script setup>
 import CartItem from '@/components/CartItem.vue'
+import { inject } from 'vue'
+
+const {closeDrawer,cart,removeFromCart} = inject('cardActions')
+
 </script>
 
 
@@ -8,6 +12,7 @@ import CartItem from '@/components/CartItem.vue'
   <div class="flex flex-col justify-between fixed h-full z-10 top-0 h-full right-0 w-96 bg-white px-10 py-7">
     <h2 class="text-2xl font-bold mb-10 flex items-center gap-5">
       <svg
+        @click="closeDrawer"
         class="rotate-180 hover:-translate-x-1 opacity-30 hover:opacity-100 transition cursor-pointer"
         width="16"
         height="14"
@@ -35,10 +40,12 @@ import CartItem from '@/components/CartItem.vue'
     <div class="flex flex-col flex-1 justify-between">
       <div class="flex flex-col gap-5">
         <CartItem
-          v-for="(item,index) in 4"
-          title="Мужские Кроссовки Nike Blazer Mid Suede"
-          price="1000"
-          :img="`/sneakers/sneakers-${index+1}.jpg`"
+          v-for="(item,index) in cart"
+          :key="index"
+          :title="item.title"
+          :price="item.price"
+          :img="`img/${item.imageUrl}`"
+          @onClickRemove="()=>removeFromCart(item)"
         />
 
       </div>
