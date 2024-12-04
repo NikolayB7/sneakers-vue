@@ -1,6 +1,7 @@
 <script setup>
 import CartItem from '@/components/CartItem.vue'
 import { inject } from 'vue'
+import InfoBlock from '@/components/InfoBlock.vue'
 
 const {closeDrawer,cart,removeFromCart} = inject('cardActions')
 
@@ -45,7 +46,19 @@ defineProps({
       </svg>
       Корзина
     </h2>
-    <div class="flex flex-col flex-1 justify-between">
+
+    <div
+      v-if="!totalPrice"
+      class="flex h-full items-center"
+    >
+      <InfoBlock
+        title="Корзина пустая"
+        description="Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
+        image-url="/img/package-icon.png">
+      </InfoBlock>
+    </div>
+
+    <div v-else class="flex flex-col flex-1 justify-between">
       <div class="flex flex-col gap-5">
         <CartItem
           v-for="(item,index) in cart"

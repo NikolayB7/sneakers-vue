@@ -6,20 +6,20 @@ import Header from '@/components/Header.vue'
 import CardList from '@/components/CardList.vue'
 
 import Drawer from '@/components/Drawer.vue'
-// import skeakersList from "../public/data/sneakers.json"
+// import sneakersList from "../public/data/sneakers.json"
 
 // onMounted(async ()=>{
 //   try {
 //     const {data} = await axios.get('https://4023d8e1c4c444d2.mokky.dev/items')
 //     console.log(data)
-//     skeakersList.value = data
+//     sneakersList.value = data
 //   }catch (err){
 //     console.log(err)
 //   }
 // })
 
 
-const skeakersList = ref([]); //{value: []}
+const sneakersList = ref([]); //{value: []}
 
 const cart = ref([])
 // reactive - для хранения обьектов
@@ -47,7 +47,7 @@ const onChangeSearchInput =()=>{
 const fetchFavorites = async ()=>{
   try {
     const {data:favorites} = await axios.get(`https://4023d8e1c4c444d2.mokky.dev/favorites`)
-    skeakersList.value = skeakersList.value.map(item=>{
+    sneakersList.value = sneakersList.value.map(item=>{
       const favorite = favorites.find(favorite=>favorite.productId === item.id);
 
       if(!favorite){
@@ -61,7 +61,7 @@ const fetchFavorites = async ()=>{
       }
 
     })
-    // console.log(skeakersList.value)
+    // console.log(sneakersList.value)
   }catch (err){
     console.log(err)
   }
@@ -98,7 +98,7 @@ const fetchItems = async ()=>{
     }
 
     const {data} = await axios.get(`https://4023d8e1c4c444d2.mokky.dev/items` ,{params})
-    skeakersList.value = data.map((obj)=>({
+    sneakersList.value = data.map((obj)=>({
       ...obj,
       isFavorite:false,
       favoriteId:null,
@@ -160,19 +160,31 @@ const createOrder = async()=>{
 
 
 onMounted(async ()=>{
+  const localCart = localStorage.getItem('cart')
+  cart.value = localCart ? JSON.parse(localCart) : []
+
   await fetchItems()
   await fetchFavorites()
+
+  sneakersList.value = sneakersList.value.map(item=>({
+    ... item,
+      isAdded: cart.value.some(el=>el.id === item.id)
+  }))
+
+
 });
 watch(fetchItems)
 watch(cart,()=>{
-  skeakersList.value = skeakersList.value.map((item)=>({
+  sneakersList.value = sneakersList.value.map((item)=>({
     ...item,
     isAdded: false
   }))
+})
+watch(cart,()=>{
+  localStorage.setItem('cart',JSON.stringify(cart.value))
 },{
   deep:true // "" глубокая проверка cart
 })
-
 provide("cardActions",
   {
     cart,
@@ -190,7 +202,7 @@ provide("cardActions",
 //   //
 //   // axios.get('https://4023d8e1c4c444d2.mokky.dev/items')
 //   //   .then((result)=>{
-//   //     skeakersList.value = result.data
+//   //     sneakersList.value = result.data
 //   //   })
 // })
 
@@ -199,7 +211,7 @@ provide("cardActions",
 //   axios.get(`https://4023d8e1c4c444d2.mokky.dev/items?sortBy=${filters.sortBy}`)
 //     .then((result)=>{
 //       console.log(result.data)
-//       skeakersList.value = result.data
+//       sneakersList.value = result.data
 //     })
 // })
 
@@ -242,7 +254,7 @@ provide("cardActions",
     </div>
 
     <CardList
-      :items="skeakersList"
+      :items="sneakersList"
       @addToFavorite="addToFavorite"
       @add-to-cart="clickToCart"
     />
