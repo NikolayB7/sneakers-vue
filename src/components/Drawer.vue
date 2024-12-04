@@ -59,7 +59,11 @@ defineProps({
     </div>
 
     <div v-else class="flex flex-col flex-1 justify-between">
-      <div class="flex flex-col gap-5">
+      <div
+        v-auto-animate
+        class="flex flex-col gap-5"
+      >
+        21221
         <CartItem
           v-for="(item,index) in cart"
           :key="index"

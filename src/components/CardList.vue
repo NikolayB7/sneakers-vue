@@ -22,7 +22,10 @@ const addCard = ()=>{
 </script>
 
 <template>
-  <div class="grid grid-cols-4 gap-5 p-5">
+  <div
+    v-auto-animate
+    class="grid grid-cols-4 gap-5 p-5"
+  >
     <Card
       v-for="(item, index) in items"
       :key="item.id"
