@@ -4,9 +4,12 @@ import { inject } from 'vue'
 
 const {closeDrawer,cart,removeFromCart} = inject('cardActions')
 
+const emit = defineEmits(['createOrder'])
+
 defineProps({
   totalPrice:Number,
-  vatPrice:Number
+  vatPrice:Number,
+  isCreatingOrder: Boolean
 })
 
 </script>
@@ -71,9 +74,12 @@ defineProps({
         </div>
 
         <button
-          class="flex justify-center items-center gap-3 w-full py-3 mt-10 bg-lime-500 text-white rounded-xl transition active:bg-lime-700 hover:bg-lime-600"
+          :disabled="totalPrice ? false : true"
+          @click = "()=>emit('createOrder')"
+          class="relative flex justify-center items-center gap-3 w-full py-3 mt-10 bg-lime-500 text-white rounded-xl transition active:bg-lime-700 hover:bg-lime-600 disabled:bg-gray-300"
         >
           Оформить заказ
+          <img v-if="isCreatingOrder" class="absolute" src="/img/loading.svg" alt="loading..." />
           <img src="/img/arrow-next.svg" alt="Arrow" />
         </button>
       </div>
