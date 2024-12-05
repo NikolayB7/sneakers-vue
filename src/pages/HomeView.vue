@@ -13,15 +13,17 @@ const filters = reactive({
 })
 
 const addToFavorite = async (item)=>{
-  item.isFavorite = !item.isFavorite
+
   try {
-    if(item.isFavorite){
+    if(!item.isFavorite){
       const obj ={
-        'product_id': item.id
+        'product_id': item.id,
+        ...item
       }
       const {data} = await axios.post('https://4023d8e1c4c444d2.mokky.dev/favorites',obj)
       // item.isFavorite = true
       item.favoriteId = data.id
+      item.isFavorite = !item.isFavorite
     }else{
       await axios.delete(`https://4023d8e1c4c444d2.mokky.dev/favorites/${item.favoriteId}`)
       // item.isFavorite = false
