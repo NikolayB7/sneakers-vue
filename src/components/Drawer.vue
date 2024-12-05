@@ -63,7 +63,6 @@ defineProps({
         v-auto-animate
         class="flex flex-col gap-5"
       >
-        21221
         <CartItem
           v-for="(item,index) in cart"
           :key="index"
