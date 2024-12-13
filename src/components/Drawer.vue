@@ -1,17 +1,38 @@
 <script setup>
 import CartItem from '@/components/CartItem.vue'
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
 import InfoBlock from '@/components/InfoBlock.vue'
+import axios from 'axios'
 
-const {closeDrawer,cart,removeFromCart} = inject('cardActions')
 
-const emit = defineEmits(['createOrder'])
-
-defineProps({
+const props = defineProps({
   totalPrice:Number,
   vatPrice:Number,
   isCreatingOrder: Boolean
 })
+
+const {closeDrawer,cart,removeFromCart} = inject('cardActions');
+
+const isCreatingOrder = ref(false);
+const orderSaccess = ref(null);
+const createOrder = async()=>{
+
+  try{
+    isCreatingOrder.value = true
+    const {data} = await axios.post(`https://4023d8e1c4c444d2.mokky.dev/orders`,{
+      items:cart.value,
+      totalPrice:props.totalPrice.value
+    })
+    console.log(data.id,'___data.id')
+    cart.value = [];
+    orderSaccess.value = data.id
+    return data
+  }catch(err) {
+    console.log(err)
+  }finally {
+    isCreatingOrder.value = false
+  }
+}
 
 </script>
 
@@ -48,10 +69,17 @@ defineProps({
     </h2>
 
     <div
-      v-if="!totalPrice"
+      v-if="!totalPrice || orderSaccess"
       class="flex h-full items-center"
     >
       <InfoBlock
+        v-if="orderSaccess"
+        title="Заказ оформлен!"
+        :description="`Ваш заказ #${orderSaccess} скоро будет передан курьерской доставке`"
+        image-url="/img/order-success-icon.png">
+      </InfoBlock>
+      <InfoBlock
+        v-if="!totalPrice && !orderSaccess"
         title="Корзина пустая"
         description="Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
         image-url="/img/package-icon.png">
@@ -91,7 +119,7 @@ defineProps({
 
         <button
           :disabled="totalPrice ? false : true"
-          @click = "()=>emit('createOrder')"
+          @click = "createOrder"
           class="relative flex justify-center items-center gap-3 w-full py-3 mt-10 bg-lime-500 text-white rounded-xl transition active:bg-lime-700 hover:bg-lime-600 disabled:bg-gray-300"
         >
           Оформить заказ

@@ -3,7 +3,7 @@
 import CardList from '@/components/CardList.vue'
 import axios from 'axios'
 import { inject, onMounted, reactive, ref, watch } from 'vue'
-
+import debounce from "lodash.debounce"
 const { cart, addToCart, removeFromCart } = inject('cardActions')
 
 const sneakersList = ref([]); //{value: []}
@@ -36,9 +36,9 @@ const addToFavorite = async (item)=>{
 const onChangeSelect = ()=>{
   filters.sortBy = event.target.value
 }
-const onChangeSearchInput =()=>{
-  filters.searchQuery = event.target.value
-}
+const onChangeSearchInput = debounce((event) => {
+  filters.searchQuery = event.target.value;
+}, 500);
 const fetchFavorites = async ()=>{
   try {
     const {data:favorites} = await axios.get(`https://4023d8e1c4c444d2.mokky.dev/favorites`)
@@ -132,7 +132,7 @@ watch(cart,()=>{
       </select>
       <div class="relative">
         <input
-          @change="onChangeSearchInput"
+          @input="onChangeSearchInput"
           type="text"
           class="border border-gray-200 rounded-md py-2 pl-10 pr-4 focus:outline-none focus:border-gray-400"
           placeholder="Поиск..."

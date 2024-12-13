@@ -22,7 +22,7 @@ import Drawer from '@/components/Drawer.vue'
 const cart = ref([])
 // reactive - для хранения обьектов
 // ref - для хранения массивов
-const isCreatingOrder = ref(false)
+
 const totalPrice = computed(()=> cart.value.reduce((count,item)=>count + item.price,0));
 const vatPrice = computed(()=>Math.round((totalPrice.value * 5) / 100));
 const drawerOpen = ref(false)
@@ -47,24 +47,7 @@ const openDrawer = ()=>{
 const closeDrawer = ()=>{
   drawerOpen.value = false
 }
-const createOrder = async()=>{
 
-  try{
-    isCreatingOrder.value = true
-    const {data} = await axios.post(`https://4023d8e1c4c444d2.mokky.dev/orders`,{
-      items:cart.value,
-      totalPrice:totalPrice.value
-    })
-
-    cart.value = [];
-
-    return data
-  }catch(err) {
-    console.log(err)
-  }finally {
-    isCreatingOrder.value = false
-  }
-}
 /* Корзина (END)*/
 
 
@@ -116,8 +99,6 @@ provide("cardActions",
       v-if="drawerOpen"
       :vat-price="vatPrice"
       :total-price="totalPrice"
-      @create-order="createOrder"
-      :is-creating-order="isCreatingOrder"
     />
 
   </div>
