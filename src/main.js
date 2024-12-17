@@ -1,6 +1,7 @@
 import './assets/main.css'
 
 import { createApp } from 'vue'
+import i18n from './i18n';
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 
 import App from './App.vue'
@@ -23,5 +24,6 @@ const router = createRouter({
 
 app
   .use(autoAnimatePlugin)
+  .use(i18n)
   .use(router)
   .mount('#app')

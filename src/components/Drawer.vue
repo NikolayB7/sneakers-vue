@@ -65,7 +65,7 @@ const createOrder = async()=>{
           stroke-linejoin="round"
         />
       </svg>
-      Корзина
+      {{ $t('cart.title') }}
     </h2>
 
     <div
@@ -74,14 +74,14 @@ const createOrder = async()=>{
     >
       <InfoBlock
         v-if="orderSaccess"
-        title="Заказ оформлен!"
-        :description="`Ваш заказ #${orderSaccess} скоро будет передан курьерской доставке`"
+        :title="$t('cart.order_success')"
+        :description="$t('cart.order_description',{order_number:orderSaccess})"
         image-url="/img/order-success-icon.png">
       </InfoBlock>
       <InfoBlock
         v-if="!totalPrice && !orderSaccess"
-        title="Корзина пустая"
-        description="Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ."
+        :title="$t('cart.title_empty')"
+        :description="$t('cart.empty_description')"
         image-url="/img/package-icon.png">
       </InfoBlock>
     </div>
@@ -105,13 +105,13 @@ const createOrder = async()=>{
       <div>
         <div class="flex flex-col gap-5">
           <div class="flex items-end gap-2">
-            <span>Итого:</span>
+            <span>{{ $t('cart.total') }}:</span>
             <div class="flex-1 border-b border-dashed" />
             <span class="font-bold">{{ totalPrice }} uan.</span>
           </div>
 
           <div class="flex items-end gap-2">
-            <span>Налог 5%:</span>
+            <span>{{ $t('cart.tax') }} 5%:</span>
             <div class="flex-1 border-b border-dashed" />
             <span class="font-bold">{{ vatPrice }} uan.</span>
           </div>
@@ -122,7 +122,7 @@ const createOrder = async()=>{
           @click = "createOrder"
           class="relative flex justify-center items-center gap-3 w-full py-3 mt-10 bg-lime-500 text-white rounded-xl transition active:bg-lime-700 hover:bg-lime-600 disabled:bg-gray-300"
         >
-          Оформить заказ
+          {{ $t('cart.order_btn') }}
           <img v-if="isCreatingOrder" class="absolute" src="/img/loading.svg" alt="loading..." />
           <img src="/img/arrow-next.svg" alt="Arrow" />
         </button>

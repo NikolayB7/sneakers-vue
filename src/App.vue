@@ -1,6 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref, watch, provide, computed } from 'vue'
-import axios from 'axios'
+import { ref, provide, computed } from 'vue'
 
 import Header from '@/components/Header.vue'
 
