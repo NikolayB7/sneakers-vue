@@ -24,7 +24,7 @@ defineProps({
     <p>{{ title }}</p>
     <div class="flex justify-between mt-5">
       <div class="flex flex-col gap-2">
-        <span class="text-slate-200">Цена:</span>
+        <span class="text-slate-200">{{ $t('price') }}:</span>
         <span class="font-bold">{{ price }} uan.</span>
       </div>
       <img @click="addCart" :src="!isAdded ? '/img/plus.svg' : '/img/checked.svg'" alt="Plus" />

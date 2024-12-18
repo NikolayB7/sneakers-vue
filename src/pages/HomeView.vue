@@ -4,10 +4,12 @@ import CardList from '@/components/CardList.vue'
 import axios from 'axios'
 import { inject, onMounted, reactive, ref, watch } from 'vue'
 import debounce from "lodash.debounce"
+import Toast from '@/components/Toast.vue'
 const { cart, addToCart, removeFromCart } = inject('cardActions')
-
+import staticSneakersList from "../../public/data/sneakers.json"
 
 const isLoading = ref(true);
+const isFailed = ref(false);
 const sneakersList = ref([]); //{value: []}
 const filters = reactive({
   sortBy: 'title',
@@ -87,12 +89,20 @@ const fetchItems = async ()=>{
       favoriteId:null,
       isAdded:false
     }))
-  }catch (err){
-    alert('VPN error',err)
-    console.log(err)
-  }finally {
     isLoading.value= false
+  }catch (err){
+    isFailed.value = true
+    isLoading.value= true
+    console.log(err)
   }
+}
+const closeToast = ()=>{
+  isFailed.value = false
+}
+const getSatic = ()=>{
+  sneakersList.value = staticSneakersList
+  isLoading.value= false
+  closeToast()
 }
 
 onMounted(async ()=>{
@@ -116,6 +126,7 @@ watch(cart,()=>{
   }))
 })
 watch(filters,fetchItems)
+watch(isFailed, () => { if (!isFailed.value) { getSatic(); } });
 watch(cart,()=>{
   localStorage.setItem('cart',JSON.stringify(cart.value))
 },{
@@ -153,6 +164,11 @@ watch(cart,()=>{
     :items="sneakersList"
     @addToFavorite="addToFavorite"
     @add-to-cart="clickToCart"
+  />
+  <Toast
+    v-if="isFailed"
+    :getSatic="getSatic"
+    :close="closeToast"
   />
 </template>
 

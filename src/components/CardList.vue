@@ -29,7 +29,7 @@ const emit = defineEmits(['addToFavorite','addToCart'])
     </div>
 
     <Card
-      v-else
+      v-if="!loading"
       v-for="(item, index) in items"
       :key="`${item.id + index}`"
       :id="item.id"

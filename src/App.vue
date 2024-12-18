@@ -4,7 +4,6 @@ import { ref, provide, computed } from 'vue'
 import Header from '@/components/Header.vue'
 
 import Drawer from '@/components/Drawer.vue'
-// import sneakersList from "../public/data/sneakers.json"
 
 // onMounted(async ()=>{
 //   try {

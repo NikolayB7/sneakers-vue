@@ -7,6 +7,7 @@ const messages = {
     bookmarks: 'Bookmarks',
     profile: 'Profile',
     all_sneakers: 'All sneakers',
+    price:'Price',
     filter:{
       name:'By name',
       price_up:'By price (expensive)',
@@ -21,7 +22,13 @@ const messages = {
       order_description: 'Ваш заказ #{order_number} скоро будет передан курьерской доставке',
       total: 'Total',
       tax: 'Tax',
-      order_btn: 'Place order'
+      order_btn: 'Place order',
+    },
+    toast:{
+      title:'Attention!',
+      description:'Enable VPN or download static data',
+      load:'Download',
+      close:'Close'
     }
   },
   ru: {
@@ -29,6 +36,7 @@ const messages = {
     bookmarks: 'Закладки',
     profile: 'Профиль',
     all_sneakers: 'Все кроссовки',
+    price:'Цена',
     filter:{
       name:'По названию',
       price_up:'По цене (дорогие)',
@@ -43,7 +51,13 @@ const messages = {
       order_description:'Ваш заказ #{order_number} скоро будет передан курьерской доставке',
       total:'Итого',
       tax:'Налог',
-      order_btn:'Оформить заказ'
+      order_btn:'Оформить заказ',
+    },
+    toast:{
+      title:'Внимние!',
+      description:'Включите VPN или загрузите статические данные',
+      load:'Загрузить',
+      close:'Закрыть'
     }
   },
 };
