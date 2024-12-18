@@ -6,6 +6,8 @@ import { inject, onMounted, reactive, ref, watch } from 'vue'
 import debounce from "lodash.debounce"
 const { cart, addToCart, removeFromCart } = inject('cardActions')
 
+
+const isLoading = ref(true);
 const sneakersList = ref([]); //{value: []}
 const filters = reactive({
   sortBy: 'title',
@@ -86,7 +88,10 @@ const fetchItems = async ()=>{
       isAdded:false
     }))
   }catch (err){
+    alert('VPN error',err)
     console.log(err)
+  }finally {
+    isLoading.value= false
   }
 }
 
@@ -144,6 +149,7 @@ watch(cart,()=>{
     </div>
   </div>
   <CardList
+    :loading="isLoading"
     :items="sneakersList"
     @addToFavorite="addToFavorite"
     @add-to-cart="clickToCart"
