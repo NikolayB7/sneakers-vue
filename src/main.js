@@ -18,9 +18,9 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory('/sneakers-vue/'),
+  history: createWebHistory(import.meta.env.MODE === 'production' ? '/sneakers-vue/' : '/'),
   routes,
-})
+});
 
 app
   .use(autoAnimatePlugin)

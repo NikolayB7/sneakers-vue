@@ -11,6 +11,8 @@ const props = defineProps({
   isCreatingOrder: Boolean
 })
 
+const baseUrl = import.meta.env.VITE_BASE_URL
+
 const {closeDrawer,cart,removeFromCart} = inject('cardActions');
 
 const isCreatingOrder = ref(false);
@@ -76,13 +78,13 @@ const createOrder = async()=>{
         v-if="orderSaccess"
         :title="$t('cart.order_success')"
         :description="$t('cart.order_description',{order_number:orderSaccess})"
-        image-url="/img/order-success-icon.png">
+        :image-url="`${baseUrl}img/order-success-icon.png`">
       </InfoBlock>
       <InfoBlock
         v-if="!totalPrice && !orderSaccess"
         :title="$t('cart.title_empty')"
         :description="$t('cart.empty_description')"
-        image-url="/img/package-icon.png">
+        :image-url="`${baseUrl}img/package-icon.png`">
       </InfoBlock>
     </div>
 

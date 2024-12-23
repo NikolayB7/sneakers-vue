@@ -12,9 +12,7 @@
         v-for="locale in $i18n.availableLocales"
         :key="`locale-${locale}`"
         :value="locale">
-        <span class="cursor-pointer">
-                  {{ locale.toUpperCase() }}
-        </span>
+        {{ locale.toUpperCase() }}
       </option>
     </select>
   </div>
